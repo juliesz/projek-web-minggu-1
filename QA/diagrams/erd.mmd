@@ -1,0 +1,104 @@
+erDiagram
+    USER ||--o{ TRANSAKSI : "places (pelanggan_id)"
+    USER ||--o{ TRANSAKSI : "processes (kasir_id)"
+    USER ||--o{ CATATAN_KEUANGAN : "records (user_id)"
+    USER ||--o{ PASSWORD_REQUESTS : "resolves (resolved_by)"
+    SUPPLIER ||--o{ PRODUK : "supplies"
+    SUPPLIER ||--o{ PENGELUARAN : "receives_payment"
+    TRANSAKSI ||--|{ DETAIL_TRANSAKSI : "contains"
+    PRODUK ||--o{ DETAIL_TRANSAKSI : "ordered_in"
+
+    USER {
+        bigint id PK
+        string nama
+        string username UK
+        string password
+        string role "admin | kasir | pelanggan"
+        string no_hp
+        text alamat
+        string latitude
+        string longitude
+        timestamps created_at
+    }
+
+    SUPPLIER {
+        bigint id PK
+        string nama_supplier
+        string no_telepon
+        text alamat
+        timestamps created_at
+    }
+
+    PRODUK {
+        bigint id PK
+        bigint supplier_id FK
+        string nama_produk
+        string kategori
+        text deskripsi
+        string gambar
+        int harga
+        int stok
+        timestamps created_at
+    }
+
+    TRANSAKSI {
+        bigint id PK
+        string kode_transaksi UK
+        bigint pelanggan_id FK
+        bigint kasir_id FK
+        string nama_pelanggan
+        string no_hp
+        text alamat
+        string latitude
+        string longitude
+        string metode_pembayaran
+        string bukti_transfer
+        int ongkir
+        datetime tanggal_transaksi
+        int total_harga
+        int nominal_bayar
+        int kembalian
+        enum status "menunggu_verifikasi | diproses | dikirim | selesai | ditolak"
+        text catatan
+        timestamps created_at
+    }
+
+    DETAIL_TRANSAKSI {
+        bigint id PK
+        bigint transaksi_id FK
+        bigint produk_id FK
+        int jumlah
+        int harga_satuan
+        int subtotal
+        timestamps created_at
+    }
+
+    PENGELUARAN {
+        bigint id PK
+        bigint supplier_id FK
+        date tanggal
+        int nominal
+        text keterangan
+        timestamps created_at
+    }
+
+    CATATAN_KEUANGAN {
+        bigint id PK
+        bigint user_id FK
+        date tanggal
+        int nominal "positif=debit, negatif=kredit"
+        text keterangan
+        timestamps created_at
+    }
+
+    PASSWORD_REQUESTS {
+        bigint id PK
+        string username
+        string nama
+        string no_telepon
+        text pesan
+        enum status "pending | selesai | ditolak"
+        timestamp resolved_at
+        bigint resolved_by FK
+        timestamps created_at
+    }

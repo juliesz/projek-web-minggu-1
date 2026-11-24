@@ -1,0 +1,15 @@
+flowchart TD
+    Start([Kasir Login]) --> Dashboard[Buka /kasir/dashboard]
+    Dashboard --> CheckOrders[Buka /kasir/pesanan]
+    CheckOrders --> FilterTab[Filter Tab: Menunggu Verifikasi]
+    FilterTab --> ClickOrder[Pilih Pesanan Masuk]
+    ClickOrder --> ViewProof[Periksa Data & Bukti Transfer]
+    ViewProof --> Decision{Validasi Bukti?}
+    Decision -->|Bukti Sah| Verify[Klik Verifikasi: Status menjadi 'diproses']
+    Decision -->|Bukti Tidak Valid / Kurang| Reject[Klik Tolak: Status menjadi 'ditolak']
+    Verify --> ProgressFlow{Proses Pesanan}
+    ProgressFlow -->|Pesanan Dikemas & Dikirim| StatusKirim[Update Status: 'dikirim']
+    StatusKirim -->|Barang Sampai / Diterima| StatusSelesai[Update Status: 'selesai'<br/>Set nominal_bayar = total_harga]
+    StatusSelesai --> Riwayat[Data Masuk Buku Riwayat /kasir/riwayat]
+    Reject --> EndReject([Pesanan Ditolak])
+    Riwayat --> EndSuccess([Pesanan Selesai])

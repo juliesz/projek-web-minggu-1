@@ -1,0 +1,63 @@
+graph TD
+    subgraph Client ["Client Tier (Web Browser)"]
+        UI_Pub["Public / Pelanggan Interface<br/>(Tailwind CSS, Alpine.js, Responsive UI)"]
+        UI_Kasir["Kasir Interface<br/>(POS Fulfillment & Order Monitoring)"]
+        UI_Admin["Admin Interface<br/>(Backoffice & Master Data Management)"]
+    end
+
+    subgraph Routing ["Routing & Middleware Tier (Laravel 11 / PHP 8.3)"]
+        WebRoutes["web.php Routing Engine"]
+        AuthMiddleware["Auth Middleware (Session Guard)"]
+        RoleMiddleware["Role Middleware (role:admin / role:kasir,admin)"]
+    end
+
+    subgraph AppControllers ["Controller Tier"]
+        HC["HomeController"]
+        OC["OrderController"]
+        AC["AuthController"]
+        FPC["ForgotPasswordController"]
+        KPC["Kasir\\PesananController"]
+        KRC["Kasir\\RiwayatController"]
+        ADC["Admin\\DashboardController"]
+        APC["Admin\\ProdukController"]
+        ASC["Admin\\SupplierController"]
+        APemC["Admin\\PembelianController"]
+        APUC["Admin\\PenggunaController"]
+        ATC["Admin\\TransaksiController"]
+        ALC["Admin\\CatatanKeuanganController"]
+        APRC["Admin\\PasswordRequestController"]
+    end
+
+    subgraph DomainModels ["Eloquent Model & Business Logic Tier"]
+        M_User["User Model"]
+        M_Prod["Produk Model"]
+        M_Supp["Supplier Model"]
+        M_Trans["Transaksi Model"]
+        M_Det["DetailTransaksi Model"]
+        M_Peng["Pengeluaran Model"]
+        M_Cat["CatatanKeuangan Model"]
+        M_PR["PasswordRequest Model"]
+    end
+
+    subgraph DatabaseTier ["Persistence & Storage Tier"]
+        MySQL[("MySQL Database: simantap2_db")]
+        StorageDisk[("Public Disk Storage: storage/app/public<br/>(Produk images & Bukti Transfer)")]
+        PDFEngine["Barryvdh DomPDF Engine"]
+    end
+
+    UI_Pub --> WebRoutes
+    UI_Kasir --> AuthMiddleware --> RoleMiddleware --> WebRoutes
+    UI_Admin --> AuthMiddleware --> RoleMiddleware --> WebRoutes
+
+    WebRoutes --> HC & OC & AC & FPC
+    WebRoutes --> KPC & KRC
+    WebRoutes --> ADC & APC & ASC & APemC & APUC & ATC & ALC & APRC
+
+    HC & OC & AC & FPC --> DomainModels
+    KPC & KRC --> DomainModels
+    ADC & APC & ASC & APemC & APUC & ATC & ALC & APRC --> DomainModels
+
+    DomainModels --> MySQL
+    APC --> StorageDisk
+    OC --> StorageDisk
+    ALC --> PDFEngine

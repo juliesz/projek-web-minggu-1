@@ -1,0 +1,18 @@
+flowchart TD
+    Start([Pelanggan Membuka Web]) --> Browse[Pilih Produk Pertanian]
+    Browse --> AddCart[Masukkan ke Keranjang Belanja]
+    AddCart --> ViewCart{Buka Keranjang?}
+    ViewCart -->|Lanjut| CheckoutPage[Halaman Checkout /checkout]
+    CheckoutPage --> FormInput[Isi Nama, No HP, Alamat, Titik Koordinat]
+    FormInput --> ShippingSelect[Pilih Pengiriman:<br/>1. Pickup Toko (Rp 0)<br/>2. Kurir Toko (Rp 15.000)<br/>3. J&T Reguler (Jarak-based)<br/>4. J&T Cargo (Berat-based)]
+    ShippingSelect --> ServerCalc[Server Hitung Ulang Ongkir via Haversine Formula]
+    ServerCalc --> PaySelect[Pilih Metode Pembayaran:<br/>Transfer Bank / Tunai]
+    PaySelect --> Submit[POST /orders/submit]
+    Submit --> CreateTrans[Buat Record Transaksi: status 'menunggu_verifikasi']
+    CreateTrans --> PayPage[Halaman Instruksi Bayar /orders/payment]
+    PayPage --> UploadCheck{Metode Transfer?}
+    UploadCheck -->|Ya| UploadProof[Upload Bukti Transfer PNG/JPG/PDF]
+    UploadCheck -->|Tunai/Pickup| Success[Halaman Sukses /orders/success]
+    UploadProof --> Success
+    Success --> MyOrders[Pelanggan Lacak Status di /pesanan-saya]
+    MyOrders --> End([Selesai])

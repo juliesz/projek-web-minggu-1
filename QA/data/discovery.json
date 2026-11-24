@@ -1,0 +1,339 @@
+{
+  "project": {
+    "name": "SIMANTAP",
+    "full_name": "Sistem Informasi Manajemen & Transaksi Pertanian",
+    "application_type": "Point of Sale (POS), Inventory & E-Commerce Web Application",
+    "description": "Aplikasi berbasis web untuk operasional toko perlengkapan dan alat pertanian yang mencakup katalog belanja online untuk pelanggan, point of sale dan verifikasi pesanan oleh kasir, serta backoffice administrasi stok produk, supplier, pembelian restock, buku kas keuangan, dan manajemen akun.",
+    "technology_stack": {
+      "backend_framework": "Laravel 11.x / 12.x",
+      "runtime_environment": "PHP 8.3 / 8.5 (ZTS)",
+      "database": "MySQL (simantap2_db)",
+      "frontend_stack": "Blade Templating, Tailwind CSS, Alpine.js / Vanilla JS, FontAwesome",
+      "document_engine": "Barryvdh DomPDF",
+      "test_automation_engine": "Playwright Chromium (Python/Node)"
+    },
+    "target_users": [
+      "Petani & Pelanggan Umum (Pembeli alat/bahan pertanian)",
+      "Petugas Kasir Toko (Fulfillment & POS Terminal)",
+      "Pemilik Toko & Administrator (Pengelola Master Data & Keuangan)"
+    ],
+    "deployment_environment": "Local Development (Laragon / PHP CLI Server http://127.0.0.1:8000)",
+    "discovery_date": "2026-11-24",
+    "discovery_status": "Complete & Verified against Codebase, Database & Live Server"
+  },
+  "modules": [
+    {
+      "id": "MOD_01",
+      "name": "Public Catalog & E-Commerce Ordering",
+      "description": "Katalog belanja produk pertanian, keranjang belanja, checkout pengiriman dan kalkulasi ongkir real-time, upload bukti pembayaran, dan pelacakan pesanan.",
+      "accessible_roles": [
+        "public",
+        "pelanggan"
+      ]
+    },
+    {
+      "id": "MOD_02",
+      "name": "User Authentication & Account Management",
+      "description": "Autentikasi multi-role (Admin, Kasir, Pelanggan), registrasi pelanggan baru, permohonan reset password, dan manajemen sesi login.",
+      "accessible_roles": [
+        "public",
+        "pelanggan",
+        "kasir",
+        "admin"
+      ]
+    },
+    {
+      "id": "MOD_03",
+      "name": "Kasir Order Fulfillment & POS Terminal",
+      "description": "Dashboard operasional kasir, monitoring pesanan masuk, verifikasi bukti transfer, update status pesanan bertahap, dan rekapitulasi riwayat transaksi selesai.",
+      "accessible_roles": [
+        "kasir",
+        "admin"
+      ]
+    },
+    {
+      "id": "MOD_04",
+      "name": "Admin Master Data Management (Produk & Supplier)",
+      "description": "Pengelolaan data produk pertanian beserta upload gambar dan stok, serta pengelolaan master data supplier/pemasok.",
+      "accessible_roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "MOD_05",
+      "name": "Admin Pembelian & Restock Supplier",
+      "description": "Pencatatan faktur pengeluaran pembelian barang ke supplier yang secara otomatis tersinkronisasi ke jurnal buku kas.",
+      "accessible_roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "MOD_06",
+      "name": "Admin Monitoring Transaksi Penjualan",
+      "description": "Monitoring riwayat transaksi penjualan secara menyeluruh dengan filter periode, status, dan rincian item.",
+      "accessible_roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "MOD_07",
+      "name": "Admin Laporan Keuangan (Buku Kas & Export PDF)",
+      "description": "Buku kas debit/kredit, filter rentang tanggal, pencatatan manual pengeluaran/pemasukan, dan ekspor cetak PDF formal.",
+      "accessible_roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "MOD_08",
+      "name": "Admin Password Request Resolution",
+      "description": "Review permintaan reset kata sandi dari user, eksekusi pembaruan password, dan penolakan tiket.",
+      "accessible_roles": [
+        "admin"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "PAGE_PUB_01",
+      "name": "Katalog Beranda",
+      "route": "home",
+      "url": "/",
+      "module_id": "MOD_01",
+      "role": "public",
+      "screenshot": "PAGE_PUB_01_HOME.png"
+    },
+    {
+      "id": "PAGE_PUB_02",
+      "name": "Login Pengguna",
+      "route": "login",
+      "url": "/login",
+      "module_id": "MOD_02",
+      "role": "public",
+      "screenshot": "PAGE_PUB_02_LOGIN.png"
+    },
+    {
+      "id": "PAGE_PUB_03",
+      "name": "Registrasi Pelanggan",
+      "route": "register",
+      "url": "/register",
+      "module_id": "MOD_02",
+      "role": "public",
+      "screenshot": "PAGE_PUB_03_REGISTER.png"
+    },
+    {
+      "id": "PAGE_PUB_04",
+      "name": "Permintaan Lupa Password",
+      "route": "password.request",
+      "url": "/forgot-password",
+      "module_id": "MOD_02",
+      "role": "public",
+      "screenshot": "PAGE_PUB_04_FORGOT_PASSWORD.png"
+    },
+    {
+      "id": "PAGE_PUB_05",
+      "name": "Form Checkout",
+      "route": "checkout",
+      "url": "/checkout",
+      "module_id": "MOD_01",
+      "role": "public/pelanggan",
+      "screenshot": "PAGE_PUB_05_CHECKOUT.png"
+    },
+    {
+      "id": "PAGE_PUB_06",
+      "name": "Instruksi Pembayaran & Upload Bukti",
+      "route": "orders.payment",
+      "url": "/orders/payment",
+      "module_id": "MOD_01",
+      "role": "public/pelanggan",
+      "screenshot": "PAGE_PUB_06_PAYMENT.png"
+    },
+    {
+      "id": "PAGE_PUB_07",
+      "name": "Konfirmasi Pesanan Sukses",
+      "route": "orders.success",
+      "url": "/orders/success",
+      "module_id": "MOD_01",
+      "role": "public/pelanggan",
+      "screenshot": "PAGE_PUB_07_MY_ORDERS.png"
+    },
+    {
+      "id": "PAGE_PUB_08",
+      "name": "Lacak Pesanan Saya",
+      "route": "orders.my-orders",
+      "url": "/pesanan-saya",
+      "module_id": "MOD_01",
+      "role": "pelanggan",
+      "screenshot": "PAGE_PUB_07_MY_ORDERS.png"
+    },
+    {
+      "id": "PAGE_KAS_01",
+      "name": "Dashboard Kasir",
+      "route": "kasir.dashboard",
+      "url": "/kasir/dashboard",
+      "module_id": "MOD_03",
+      "role": "kasir,admin",
+      "screenshot": "PAGE_KAS_01_DASHBOARD.png"
+    },
+    {
+      "id": "PAGE_KAS_02",
+      "name": "Daftar Pesanan Masuk",
+      "route": "kasir.pesanan.index",
+      "url": "/kasir/pesanan",
+      "module_id": "MOD_03",
+      "role": "kasir,admin",
+      "screenshot": "PAGE_KAS_02_PESANAN.png"
+    },
+    {
+      "id": "PAGE_KAS_03",
+      "name": "Detail Pesanan Masuk",
+      "route": "kasir.pesanan.show",
+      "url": "/kasir/pesanan/{id}",
+      "module_id": "MOD_03",
+      "role": "kasir,admin",
+      "screenshot": "PAGE_KAS_02_PESANAN.png"
+    },
+    {
+      "id": "PAGE_KAS_04",
+      "name": "Riwayat Transaksi Kasir",
+      "route": "kasir.riwayat.index",
+      "url": "/kasir/riwayat",
+      "module_id": "MOD_03",
+      "role": "kasir,admin",
+      "screenshot": "PAGE_KAS_03_RIWAYAT.png"
+    },
+    {
+      "id": "PAGE_ADM_01",
+      "name": "Dashboard Admin",
+      "route": "admin.dashboard",
+      "url": "/admin/dashboard",
+      "module_id": "MOD_04",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_01_DASHBOARD.png"
+    },
+    {
+      "id": "PAGE_ADM_02",
+      "name": "Manajemen Produk",
+      "route": "admin.produk.index",
+      "url": "/admin/produk",
+      "module_id": "MOD_04",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_02_PRODUK.png"
+    },
+    {
+      "id": "PAGE_ADM_03",
+      "name": "Manajemen Supplier",
+      "route": "admin.supplier.index",
+      "url": "/admin/supplier",
+      "module_id": "MOD_04",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_03_SUPPLIER.png"
+    },
+    {
+      "id": "PAGE_ADM_04",
+      "name": "Pembelian Restock Supplier",
+      "route": "admin.pembelian.create",
+      "url": "/admin/pembelian",
+      "module_id": "MOD_05",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_04_PEMBELIAN.png"
+    },
+    {
+      "id": "PAGE_ADM_05",
+      "name": "Manajemen Pengguna",
+      "route": "admin.pengguna.index",
+      "url": "/admin/pengguna",
+      "module_id": "MOD_04",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_05_PENGGUNA.png"
+    },
+    {
+      "id": "PAGE_ADM_06",
+      "name": "Monitoring Transaksi",
+      "route": "admin.transaksi.index",
+      "url": "/admin/transaksi",
+      "module_id": "MOD_06",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_06_TRANSAKSI.png"
+    },
+    {
+      "id": "PAGE_ADM_07",
+      "name": "Laporan Keuangan",
+      "route": "admin.laporan.index",
+      "url": "/admin/laporan",
+      "module_id": "MOD_07",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_07_LAPORAN.png"
+    },
+    {
+      "id": "PAGE_ADM_08",
+      "name": "Permintaan Reset Password",
+      "route": "admin.password-request.index",
+      "url": "/admin/password-request",
+      "module_id": "MOD_08",
+      "role": "admin",
+      "screenshot": "PAGE_ADM_08_PASSWORD_REQUEST.png"
+    }
+  ],
+  "business_rules": [
+    {
+      "id": "BR_01",
+      "name": "Kalkulasi Ongkir Anti-Cheat",
+      "description": "Nilai ongkir tidak dipercaya dari input form client melainkan dihitung ulang pada server menggunakan rumus Haversine (toko di koordinat -7.546835, 112.226512). Kurir Toko = Rp 15.000 flat, J&T Reguler berjenjang (<=15km: Rp10.000, <=50km: Rp20.000, >50km: Rp35.000), J&T Cargo berbasis berat minimal 10 kg dengan tarif wilayah."
+    },
+    {
+      "id": "BR_02",
+      "name": "Format Kode Transaksi Unik",
+      "description": "Setiap pesanan di-generate dengan format ORD-YYYYMMDD-XXXX (4 karakter unik random alfanumerik kapital)."
+    },
+    {
+      "id": "BR_03",
+      "name": "Workflow Status Pesanan",
+      "description": "Transisi status pesanan: menunggu_verifikasi -> diproses -> dikirim -> selesai. Dapat dibatalkan/ditolak menjadi status: ditolak."
+    },
+    {
+      "id": "BR_04",
+      "name": "Otomasi Kasir Assignment",
+      "description": "Ketika kasir memverifikasi pesanan atau memperbarui status, field kasir_id otomatis diisi dengan ID user kasir yang sedang aktif login."
+    },
+    {
+      "id": "BR_05",
+      "name": "Penyelarasan Nominal Bayar Selesai",
+      "description": "Ketika kasir mengubah status pesanan menjadi 'selesai' dan nominal_bayar masih 0, sistem secara otomatis mengeset nominal_bayar = total_harga dan kembalian = 0."
+    },
+    {
+      "id": "BR_06",
+      "name": "Sinkronisasi Pembelian ke Buku Kas",
+      "description": "Setiap kali Admin mencatat pembelian barang ke supplier pada modul Pembelian, sistem secara otomatis membuat catatan pengeluaran di tabel 'pengeluaran' dan membuat entri negatif di tabel 'catatan_keuangan'."
+    },
+    {
+      "id": "BR_07",
+      "name": "Validasi Buku Kas Bertanda",
+      "description": "Catatan keuangan menyimpan nilai positif untuk Debit (Pemasukan) dan nilai negatif untuk Kredit (Pengeluaran), dan nominal tidak boleh 0 (not_in:0)."
+    },
+    {
+      "id": "BR_08",
+      "name": "Pencegahan Duplikasi Permintaan Password",
+      "description": "Pengguna tidak dapat mengirimkan permintaan reset password baru jika masih memiliki tiket permintaan bertatus 'pending'."
+    },
+    {
+      "id": "BR_09",
+      "name": "Enkripsi Kata Sandi Otomatis",
+      "description": "Model User menggunakan cast 'password' => 'hashed', sehingga mutator secara otomatis menerapkan enkripsi bcrypt pada setiap pembuatan dan pembaruan password."
+    },
+    {
+      "id": "BR_10",
+      "name": "Penghapusan Berantai Produk & Relasi",
+      "description": "Pembersihan produk yang dihapus menghapus file gambar fisik dari storage publik untuk mencegah berkas sampah menumpuk."
+    },
+    {
+      "id": "BR_11",
+      "name": "Isolasi Akses Multi-Role",
+      "description": "Route admin dilindungi middleware 'role:admin', sedangkan route kasir dilindungi 'role:kasir,admin'. Akses lintas batas role dicegah dan dialihkan secara otomatis."
+    },
+    {
+      "id": "BR_12",
+      "name": "Keamanan Sesi & Regenerasi Token",
+      "description": "Pada setiap keberhasilan login dan registrasi, session ID di-regenerate guna mencegah eksploitasi Session Fixation."
+    }
+  ]
+}
